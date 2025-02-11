@@ -1,4 +1,4 @@
-import createProject from "./project";
+import createProject from "./logic/project.js";
 
 export default function todoLogic(){
     let currentLastProjectId=0;
