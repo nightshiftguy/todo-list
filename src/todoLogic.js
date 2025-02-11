@@ -2,36 +2,37 @@ import createProject from "./project";
 
 export default function todoLogic(){
     let currentLastProjectId=0;
-    let projectList = [];
+    let projects = [];
     let activeProjectId=0;
 
     function addProject(properties){
-        projectList.push(createProject(properties.concat(currentLastProjectId++)));
+        activeProjectId=currentLastProjectId;
+        projects.push(createProject(properties.concat(currentLastProjectId++)));
     };
     function updateProject(id, properties){
-        let index = projectList.findIndex(project=>project.id===id);
-        projectList[index]=createProject(properties.concat(id));
+        let index = projects.findIndex(project=>project.id===id);
+        projects[index]=createProject(properties.concat(id));
     };
     function removeProject(id){
-        projectList.splice(projectList.findIndex(project=>project.id===id),1);
+        projects.splice(projects.findIndex(project=>project.id===id),1);
     };
 
     function createTodo(properties){
-        let projectIndex = projectList.findIndex(project=>project.id === currentLastProjectId);
-        projectList[projectIndex].addTask(properties);
+        let projectIndex = projects.findIndex(project=>project.id === activeProjectId);
+        projects[projectIndex].addTask(properties);
     }
     function updateTodo(id,properties){
-        let projectIndex = projectList.findIndex(project=>project.id===currentLastProjectId);
-        projectList[projectIndex].updateTask(id,properties);
+        let projectIndex = projects.findIndex(project=>project.id===activeProjectId);
+        projects[projectIndex].updateTask(id,properties);
     }
     function removeTodo(id){
-        let projectIndex = projectList.findIndex(project=>project.id===currentLastProjectId);
-        projectList[projectIndex].removeTask(id);
+        let projectIndex = projects.findIndex(project=>project.id===activeProjectId);
+        projects[projectIndex].removeTask(id);
     }
     function changeTodoCompletion(id){
-        let projectIndex = projectList.findIndex(project=>project.id===currentLastProjectId);
-        projectList[projectIndex].changeTaskCompletion(id);
+        let projectIndex = projects.findIndex(project=>project.id===activeProjectId);
+        projects[projectIndex].changeTaskCompletion(id);
     }
 
-    return  {addProject, updateProject, removeProject, createTodo, updateTodo, removeTodo, changeTodoCompletion, projectList, activeProjectId};
+    return  {addProject, updateProject, removeProject, createTodo, updateTodo, removeTodo, changeTodoCompletion, projects, activeProjectId};
 }

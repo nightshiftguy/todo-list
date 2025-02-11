@@ -1,3 +1,4 @@
-export default function createTask(title, description, dueDate, priority = Priority.MEDIUM, completed=false, id){
+export default function createTask(taskProperties){
+    let [title, description, dueDate, priority, completed, id] = taskProperties;
     return {title, description, dueDate, priority, completed, id}
 }
