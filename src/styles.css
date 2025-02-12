@@ -17,3 +17,14 @@ body{
 .tasks-container{
     flex:3 1 0;
 }
+
+.project-card{
+    background-color: rgb(5, 5, 5);
+    margin-bottom:20px;
+}
+
+.delete-button{
+    width:20px;
+    height:20px;
+    background-color: red;
+}
