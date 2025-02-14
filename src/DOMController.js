@@ -7,13 +7,15 @@ import createAddButton from "./DOM/addButton";
 
 import todoLogic from "./todoLogic";
 
+import {format} from "date-fns";
+
 export default function createDOMController(){
     const logic = todoLogic();
 
     logic.addProject(["123","123"])
-    logic.createTodo(["title","description","date","priority", true]);
-    logic.createTodo(["title","description","date","priority", true]);
-    logic.createTodo(["title","description","date","priority", true]);
+    logic.createTodo(["title","description",format(new Date(2025, 2, 10), "MM/dd/yyyy"),"low", true]);
+    logic.createTodo(["title","description",format(new Date(2025, 2, 20), "MM/dd/yyyy"),"medium", true]);
+    logic.createTodo(["title","description",format(new Date(2025, 2, 30), "MM/dd/yyyy"),"high", true]);
     logic.changeTodoCompletion(0)
     logic.addProject(["123abc","123"])
     console.log(logic.projects[0])
@@ -41,7 +43,7 @@ export default function createDOMController(){
             return;
         }
         for(let task of logic.projects[logic.activeProjectId].tasks){
-            const taskCard = createTaskCard(task.title, task.description, task.id);
+            const taskCard = createTaskCard(task.title, task.description, task.dueDate, task.completed, task.priority, task.id);
             tasksContainer.appendChild(taskCard);
         }
     }

@@ -1,5 +1,21 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+import webpack from "webpack";
+import { supportedLocales } from "./config.js";
+
+export default config = {
+  resolve: {
+    alias: {
+      "date-fns-locale": path.dirname(require.resolve("date-fns/package.json")),
+    },
+  },
+  plugins: [
+    new webpack.ContextReplacementPlugin(
+      /date-fns[/\\]locale/,
+      new RegExp(`(${locales.join("|")})\.js$`),
+    ),
+  ],
+};
 
 module.exports = {
   mode: "development",
