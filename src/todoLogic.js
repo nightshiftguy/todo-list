@@ -6,7 +6,7 @@ export default function todoLogic(){
     let activeProjectId=0;
 
     function addProject(properties){
-        activeProjectId=currentLastProjectId;
+        this.activeProjectId=currentLastProjectId;
         projects.push(createProject(properties.concat(currentLastProjectId++)));
     };
     function updateProject(id, properties){

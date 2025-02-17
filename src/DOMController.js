@@ -52,7 +52,7 @@ export default (function createDOMController(){
             element.addEventListener("click",() =>{
                 const id = element.getAttribute("item-id");
                 tasksContainer.querySelector(`[item-id="${id}"`).remove();
-                logic.removeTodo(id);
+                logic.removeTodo(parseInt(id));
                 console.log(logic.projects[0])
             });
         });

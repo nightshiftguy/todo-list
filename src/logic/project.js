@@ -8,12 +8,8 @@ export default function createProject(projectProperties){
 
     function addTask(properties){
         tasks.push(createTask(properties.concat(currentLastTaskId++)));
-        console.log("added task")
-        console.log(tasks)
     }
     function removeTask(id){
-        console.log("tasks before deletion:")
-        console.log(tasks);
         tasks.splice(tasks.findIndex(task=> task.id === id),1);
     }
     function updateTask(id, properties){
