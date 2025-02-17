@@ -21,9 +21,6 @@ export default (function createDOMController(){
     logic.createTodo(["title","description",format(new Date(2025, 2, 30), "MM/dd/yyyy"),"high", true]);
     logic.changeTodoCompletion(0)
     logic.addProject(["123abc","123"])
-    console.log(logic.projects[0])
-    console.log(logic.projects[0].tasks[0])
-    console.log(logic.activeProjectId)
 
     const container = document.querySelector(".container");
     const mainContainer = document.createElement("div");
@@ -53,7 +50,6 @@ export default (function createDOMController(){
                 const id = element.getAttribute("item-id");
                 tasksContainer.querySelector(`[item-id="${id}"`).remove();
                 logic.removeTodo(parseInt(id));
-                console.log(logic.projects[0])
             });
         });
     }
