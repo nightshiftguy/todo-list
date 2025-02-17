@@ -11,7 +11,7 @@ import createTodoStorageController from "./todoStorageController";
 
 import {format} from "date-fns";
 
-export default function createDOMController(){
+export default (function createDOMController(){
     const logic = todoLogic();
     const storageController = createTodoStorageController();
 
@@ -24,7 +24,7 @@ export default function createDOMController(){
     console.log(logic.projects[0])
     console.log(logic.projects[0].tasks[0])
     console.log(logic.activeProjectId)
-        
+
     const container = document.querySelector(".container");
     const mainContainer = document.createElement("div");
     mainContainer.setAttribute("class","main-container");
@@ -47,6 +47,22 @@ export default function createDOMController(){
             const taskCard = createTaskCard(task.title, task.description, task.dueDate, task.completed, task.priority, task.id);
             tasksContainer.appendChild(taskCard);
         }
+
+        tasksContainer.querySelectorAll("[click-action='deleteTask'").forEach((element)=>{
+            element.addEventListener("click",() =>{
+                const id = element.getAttribute("item-id");
+                tasksContainer.querySelector(`[item-id="${id}"`).remove();
+                logic.removeTodo(id);
+                console.log(logic.projects[0])
+            });
+        });
+    }
+
+    function selectProject(id){
+        if(projectsContainer.querySelector(`[item-id="${logic.activeProjectId}"`) !== null)
+            projectsContainer.querySelector(`[item-id="${logic.activeProjectId}"`).setAttribute("selected","false");
+        logic.activeProjectId=id;
+        projectsContainer.querySelector(`[item-id="${logic.activeProjectId}"`).setAttribute("selected","true");
     }
     
     function displayProjects(){
@@ -55,49 +71,35 @@ export default function createDOMController(){
             const projectCard = createProjectCard(project.title, project.description, project.id);
             projectsContainer.appendChild(projectCard);
         }
-    }
 
-    function selectProject(id){
-        projectsContainer.querySelector(`[item-id="${logic.activeProjectId}"`).setAttribute("selected","false");
-        logic.activeProjectId=id;
-        projectsContainer.querySelector(`[item-id="${logic.activeProjectId}"`).setAttribute("selected","true");
+        projectsContainer.querySelectorAll("[click-action='deleteProject'").forEach((element)=>{
+            element.addEventListener("click",() =>{
+                const id = parseInt(element.getAttribute("item-id"));
+                projectsContainer.querySelector(`[item-id="${id}"`).remove();
+                logic.removeProject(id);
+                if(id === logic.activeProjectId){
+                    displayTasks();
+                }
+            });
+        });
+    
+        //select project
+        projectsContainer.querySelectorAll(".project-card").forEach((element)=>{
+            element.addEventListener("click",(event) =>{
+                if(event.target.getAttribute("class") === "delete-button")  return;
+                const id = parseInt(element.getAttribute("item-id"));
+                selectProject(id);
+                displayTasks();
+            });
+        });
     }
     
     displayProjects();
     selectProject(logic.activeProjectId);
     displayTasks();
 
-    projectsContainer.querySelectorAll("[click-action='deleteProject'").forEach((element)=>{
-        element.addEventListener("click",() =>{
-            const id = parseInt(element.getAttribute("item-id"));
-            projectsContainer.querySelector(`[item-id="${id}"`).remove();
-            logic.removeProject(id);
-            if(id === logic.activeProjectId){
-                displayTasks();
-            }
-        });
-    });
-
-    //select project
-    projectsContainer.querySelectorAll(".project-card").forEach((element)=>{
-        element.addEventListener("click",(event) =>{
-            if(event.target.getAttribute("class") === "delete-button")  return;
-            const id = parseInt(element.getAttribute("item-id"));
-            selectProject(id);
-            displayTasks();
-        });
-    });
-
-    tasksContainer.querySelectorAll("[click-action='deleteTask'").forEach((element)=>{
-        element.addEventListener("click",() =>{
-            const id = element.getAttribute("item-id");
-            tasksContainer.querySelector(`[item-id="${id}"`).remove();
-            logic.removeTodo(id);
-        });
-    });
-
     mainContainer.appendChild(projectsContainer);
     mainContainer.appendChild(tasksContainer);
 
     container.appendChild(mainContainer);
-}
+})();
