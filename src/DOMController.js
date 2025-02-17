@@ -7,10 +7,13 @@ import createAddButton from "./DOM/addButton";
 
 import todoLogic from "./todoLogic";
 
+import createTodoStorageController from "./todoStorageController";
+
 import {format} from "date-fns";
 
 export default function createDOMController(){
     const logic = todoLogic();
+    const storageController = createTodoStorageController();
 
     logic.addProject(["123","123"])
     logic.createTodo(["title","description",format(new Date(2025, 2, 10), "MM/dd/yyyy"),"low", true]);
@@ -20,10 +23,8 @@ export default function createDOMController(){
     logic.addProject(["123abc","123"])
     console.log(logic.projects[0])
     console.log(logic.projects[0].tasks[0])
-    console.log(logic.projects[0].tasks[0])
     console.log(logic.activeProjectId)
-
-    
+        
     const container = document.querySelector(".container");
     const mainContainer = document.createElement("div");
     mainContainer.setAttribute("class","main-container");
@@ -67,7 +68,7 @@ export default function createDOMController(){
     displayTasks();
 
     projectsContainer.querySelectorAll("[click-action='deleteProject'").forEach((element)=>{
-        element.addEventListener("click",(event) =>{
+        element.addEventListener("click",() =>{
             const id = parseInt(element.getAttribute("item-id"));
             projectsContainer.querySelector(`[item-id="${id}"`).remove();
             logic.removeProject(id);
@@ -77,6 +78,7 @@ export default function createDOMController(){
         });
     });
 
+    //select project
     projectsContainer.querySelectorAll(".project-card").forEach((element)=>{
         element.addEventListener("click",(event) =>{
             if(event.target.getAttribute("class") === "delete-button")  return;
@@ -87,7 +89,7 @@ export default function createDOMController(){
     });
 
     tasksContainer.querySelectorAll("[click-action='deleteTask'").forEach((element)=>{
-        element.addEventListener("click",(event) =>{
+        element.addEventListener("click",() =>{
             const id = element.getAttribute("item-id");
             tasksContainer.querySelector(`[item-id="${id}"`).remove();
             logic.removeTodo(id);
