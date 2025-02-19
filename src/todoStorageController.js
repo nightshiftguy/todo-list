@@ -1,3 +1,6 @@
+import createTask from "./logic/task";
+import createProject from "./logic/project";
+
 export default function createTodoStorageController(){
     function storageAvailable(type) {
         let storage;
@@ -18,16 +21,29 @@ export default function createTodoStorageController(){
       }      
     function importData(){
         if(storageAvailable("localStorage")){
-            const todos = JSON.parse(localStorage.getItem("todos"));
-            return todos;
+            const todos = JSON.parse(localStorage.getItem("todos"), (key, value) => {
+              if(key==="projects"){
+                let projects = [];
+                for(let projectStringified of value){
+                  let project = createProject(projectStringified.projectProperties);
+                  for(let taskProperties of projectStringified.projectTasks){
+                    project.addTask(taskProperties);
+                  }
+                  projects.push(project);
+                }
+                return projects;
+            }
+            return value;
+          });
+          return todos.projects;
         }
         else{
             console.log("local storage not available");
         }
     }
-    function saveTodos(projects){
+    function saveTodos(todos){
         if(storageAvailable("localStorage")){
-            localStorage.setItem("todos", JSON.stringify(projects));
+            localStorage.setItem("todos", JSON.stringify({projects :todos}));
         }
     }
     return {importData, saveTodos};

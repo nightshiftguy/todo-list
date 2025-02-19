@@ -21,5 +21,9 @@ export default function createProject(projectProperties){
         let index = tasks.findIndex(task=>task.id===id);
         tasks[index].completed= !tasks[index].completed;
     }
-    return {title, description, tasks, id, addTask, removeTask, updateTask, changeTaskCompletion}
+
+    function toJSON(){
+        return {projectProperties: [this.title, this.description, this.id], projectTasks: this.tasks};
+    }
+    return {title, description, tasks, id, addTask, removeTask, updateTask, changeTaskCompletion, toJSON}
 }
