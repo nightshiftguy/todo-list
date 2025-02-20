@@ -1,1 +1,1 @@
-export default function createNewProjectDialog(){}
+export default function createNewProjectDialog() {}

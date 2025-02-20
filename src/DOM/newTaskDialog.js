@@ -1,1 +1,1 @@
-export default function createNewTaskDialog(){}
+export default function createNewTaskDialog() {}

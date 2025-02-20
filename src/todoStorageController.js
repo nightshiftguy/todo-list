@@ -1,50 +1,48 @@
-import createTask from "./logic/task";
 import createProject from "./logic/project";
 
-export default function createTodoStorageController(){
-    function storageAvailable(type) {
-        let storage;
-        try {
-          storage = window[type];
-          const x = "__storage_test__";
-          storage.setItem(x, x);
-          storage.removeItem(x);
-          return true;
-        } catch (e) {
-          return (
-            e instanceof DOMException &&
-            e.name === "QuotaExceededError" &&
-            storage &&
-            storage.length !== 0
-          );
-        }
-      }      
-    function importData(){
-        if(storageAvailable("localStorage")){
-            const todos = JSON.parse(localStorage.getItem("todos"), (key, value) => {
-              if(key==="projects"){
-                let projects = [];
-                for(let projectStringified of value){
-                  let project = createProject(projectStringified.projectProperties);
-                  for(let taskProperties of projectStringified.projectTasks){
-                    project.addTask(taskProperties);
-                  }
-                  projects.push(project);
-                }
-                return projects;
+export default function createTodoStorageController() {
+  function storageAvailable(type) {
+    let storage;
+    try {
+      storage = window[type];
+      const x = "__storage_test__";
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return (
+        e instanceof DOMException &&
+        e.name === "QuotaExceededError" &&
+        storage &&
+        storage.length !== 0
+      );
+    }
+  }
+  function importData() {
+    if (storageAvailable("localStorage")) {
+      const todos = JSON.parse(localStorage.getItem("todos"), (key, value) => {
+        if (key === "projects") {
+          let projects = [];
+          for (let projectStringified of value) {
+            let project = createProject(projectStringified.projectProperties);
+            for (let taskProperties of projectStringified.projectTasks) {
+              project.addTask(taskProperties);
             }
-            return value;
-          });
-          return todos.projects;
+            projects.push(project);
+          }
+          return projects;
         }
-        else{
-            console.log("local storage not available");
-        }
+        return value;
+      });
+      return todos.projects;
+    } else {
+      console.log("local storage not available");
     }
-    function saveTodos(todos){
-        if(storageAvailable("localStorage")){
-            localStorage.setItem("todos", JSON.stringify({projects :todos}));
-        }
+  }
+  function saveTodos(todos) {
+    if (storageAvailable("localStorage")) {
+      localStorage.setItem("todos", JSON.stringify({ projects: todos }));
     }
-    return {importData, saveTodos};
+  }
+  return { importData, saveTodos };
 }

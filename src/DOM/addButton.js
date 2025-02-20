@@ -1,1 +1,1 @@
-export default function createAddButton(){}
+export default function createAddButton() {}

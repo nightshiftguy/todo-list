@@ -1,1 +1,1 @@
-export default function createNewTaskAndSelectProjectDialog(){}
+export default function createNewTaskAndSelectProjectDialog() {}

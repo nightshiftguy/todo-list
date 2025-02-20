@@ -1,3 +1,4 @@
-import './styles.css';
-import todoLogic from "./todoLogic.js";
+import "./styles.css";
 import createDOMController from "./DOMController.js";
+
+createDOMController();
