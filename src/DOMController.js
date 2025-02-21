@@ -11,7 +11,6 @@ import todoLogic from "./todoLogic";
 
 export default function createDOMController() {
   const logic = todoLogic();
-  console.log(logic.projects)
 
   const container = document.querySelector(".container");
   const mainContainer = document.createElement("div");
@@ -26,15 +25,15 @@ export default function createDOMController() {
   function displayTasks() {
     tasksContainer.textContent = "";
     if (
-      logic.projects[logic.activeProjectId] === undefined ||
-      logic.projects[logic.activeProjectId].tasks[0] === undefined
+      logic.getActiveProject() === undefined ||
+      logic.getActiveProjectTasks()[0] === undefined
     ) {
       const noTasksInfo = document.createElement("p");
       noTasksInfo.textContent = "this project is empty";
       tasksContainer.appendChild(noTasksInfo);
       return;
     }
-    for (let task of logic.projects[logic.activeProjectId].tasks) {
+    for (let task of logic.getActiveProjectTasks()) {
       const taskCard = createTaskCard(
         task.title,
         task.description,
@@ -59,13 +58,13 @@ export default function createDOMController() {
 
   function selectProject(id) {
     const oldActiveProject = projectsContainer.querySelector(
-      `[item-id="${logic.activeProjectId}"`,
+      `[item-id="${logic.getActiveProjectId()}"`,
     );
     if (oldActiveProject !== null && oldActiveProject !== undefined)
       oldActiveProject.setAttribute("selected", "false");
-    logic.activeProjectId = id;
+    logic.setActiveProjectId(id)
     const newActiveProject = projectsContainer.querySelector(
-      `[item-id="${logic.activeProjectId}"`,
+      `[item-id="${logic.getActiveProjectId()}"`,
     );
     if (newActiveProject !== null && newActiveProject !== undefined)
       newActiveProject.setAttribute("selected", "true");
@@ -73,13 +72,13 @@ export default function createDOMController() {
 
   function displayProjects() {
     tasksContainer.textContent = "";
-    if (logic.projects[0] === undefined) {
+    if (logic.getProjects()[0] === undefined) {
       const noProjectsInfo = document.createElement("p");
       noProjectsInfo.textContent = "no projects to show";
       projectsContainer.appendChild(noProjectsInfo);
       return;
     } else {
-      for (let project of logic.projects) {
+      for (let project of logic.getProjects()) {
         const projectCard = createProjectCard(
           project.title,
           project.description,
@@ -95,7 +94,7 @@ export default function createDOMController() {
             const id = parseInt(element.getAttribute("item-id"));
             projectsContainer.querySelector(`[item-id="${id}"`).remove();
             logic.removeProject(id);
-            if (id === logic.activeProjectId) {
+            if (id === logic.getActiveProjectId()) {
               displayTasks();
             }
           });
@@ -114,7 +113,7 @@ export default function createDOMController() {
   }
 
   displayProjects();
-  selectProject(logic.activeProjectId);
+  selectProject(logic.getActiveProjectId());
   displayTasks();
 
   mainContainer.appendChild(projectsContainer);

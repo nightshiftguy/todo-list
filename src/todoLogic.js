@@ -4,76 +4,79 @@ import { format } from "date-fns";
 
 export default function todoLogic() {
   let currentLastProjectId = 0;
+  
   let projects = [];
+  function getProjects()  {return projects};
+  
   let activeProjectId = 0;
+  function getActiveProjectId() {return activeProjectId};
+  function setActiveProjectId(id) {activeProjectId=id};
+
   let todoStorageController = createTodoStorageController();
   
+
+  function getActiveProjectTasks() {
+    let projectIndex = projects.findIndex(
+    (project) => project.id === activeProjectId,
+    );
+    return projects[projectIndex].tasks
+  }
+  function getActiveProject(){
+    return projects.find((project) => project.id === activeProjectId)
+  }
+  
   function addProject(properties) {
-    if(this === undefined){
-      activeProjectId = currentLastProjectId;
+    activeProjectId = currentLastProjectId;
     projects.push(
       createProject(properties.concat(currentLastProjectId++)),
     );
     todoStorageController.saveTodos(projects);
-    }else{
-    this.activeProjectId = currentLastProjectId;
-    this.projects.push(
-      createProject(properties.concat(currentLastProjectId++)),
-    );
-    todoStorageController.saveTodos(this.projects);
-    }}
+    }
   function updateProject(id, properties) {
-    let index = this.projects.findIndex((project) => project.id === id);
-    this.projects[index] = createProject(properties.concat(id));
-    todoStorageController.saveTodos(this.projects);
+    let index = projects.findIndex((project) => project.id === id);
+    projects[index] = createProject(properties.concat(id));
+    todoStorageController.saveTodos(projects);
   }
   function removeProject(id) {
-    let index = this.projects.findIndex((project) => project.id === id);
-    this.projects.splice(index, 1);
-    if (id === this.activeProjectId) {
+    let index = projects.findIndex((project) => project.id === id);
+    projects.splice(index, 1);
+    if (id === activeProjectId) {
       for (let i = 0; i < 100; i++) {
-        if (this.projects[i] !== undefined) {
-          this.activeProjectId = this.projects[i].id;
+        if (projects[i] !== undefined) {
+          activeProjectId = projects[i].id;
         }
       }
     }
-    todoStorageController.saveTodos(this.projects);
+    todoStorageController.saveTodos(projects);
   }
 
   function createTodo(properties) {
-    if(this === undefined){let projectIndex = projects.findIndex(
+    let projectIndex = projects.findIndex(
       (project) => project.id === activeProjectId,
     );
     projects[projectIndex].addTask(properties);
-    todoStorageController.saveTodos(projects);}
-    else
-    {let projectIndex = this.projects.findIndex(
-      (project) => project.id === this.activeProjectId,
-    );
-    this.projects[projectIndex].addTask(properties);
-    todoStorageController.saveTodos(this.projects);}
-    
+    todoStorageController.saveTodos(projects);    
   }
   function updateTodo(id, properties) {
-    let projectIndex = this.projects.findIndex(
-      (project) => project.id === this.activeProjectId,
+    let projectIndex = projects.findIndex(
+      (project) => project.id === activeProjectId,
     );
-    this.projects[projectIndex].updateTask(id, properties);
-    todoStorageController.saveTodos(this.projects);
+    projects[projectIndex].updateTask(id, properties);
+    todoStorageController.saveTodos(projects);
   }
   function removeTodo(id) {
-    let projectIndex = this.projects.findIndex(
-      (project) => project.id === this.activeProjectId,
+    let projectIndex = projects.findIndex(
+      (project) => project.id === activeProjectId,
     );
-    this.projects[projectIndex].removeTask(id);
-    todoStorageController.saveTodos(this.projects);
+    projects[projectIndex].removeTask(id);
+    todoStorageController.saveTodos(projects);
   }
   function changeTodoCompletion(id) {
-    let projectIndex = this.projects.findIndex(
-      (project) => project.id === this.activeProjectId,
+    let projectIndex = projects.findIndex(
+      (project) => project.id === activeProjectId,
     );
-    this.projects[projectIndex].changeTaskCompletion(id);
-    todoStorageController.saveTodos(this.projects);
+    projects[projectIndex].changeTaskCompletion(id);
+    todoStorageController.saveTodos(projects);
   }
   
   function addTestTodos() {
@@ -100,12 +103,11 @@ export default function todoLogic() {
       true,
     ]);
     addProject(["123abc", "123"]);
-    console.log("add test todos")
   }
 
   if(todoStorageController.importData()===undefined || todoStorageController.importData().length===0) {addTestTodos()}
   projects = todoStorageController.importData();
-  console.log(projects)
+
   return {
     addProject,
     updateProject,
@@ -114,7 +116,10 @@ export default function todoLogic() {
     updateTodo,
     removeTodo,
     changeTodoCompletion,
-    projects,
-    activeProjectId,
+    getActiveProjectId,
+    setActiveProjectId,
+    getProjects,
+    getActiveProjectTasks,
+    getActiveProject
   };
 }
