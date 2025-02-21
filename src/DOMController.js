@@ -4,6 +4,7 @@ import createTaskCard from "./DOM/taskCard";
 //import createNewTaskDialog from "./DOM/newTaskDialog"
 //import createNewTaskAndSelectProjectDialog from "./DOM/newTaskAndSelectProjectDialog"
 //import createAddButton from "./DOM/addButton"
+import createInfoCard from "./DOM/infoCard";
 
 import todoLogic from "./todoLogic";
 
@@ -28,11 +29,11 @@ export default function createDOMController() {
       logic.getActiveProject() === undefined ||
       logic.getActiveProjectTasks().length === 0
     ) {
-      const noTasksInfo = document.createElement("p");
-      noTasksInfo.textContent = "this project is empty";
-      tasksContainer.appendChild(noTasksInfo);
+      const infoCard = createInfoCard("this project is empty");
+      tasksContainer.appendChild(infoCard);
       return;
     }
+
     for (let task of logic.getActiveProjectTasks()) {
       const taskCard = createTaskCard(
         task.title,
@@ -73,43 +74,41 @@ export default function createDOMController() {
   function displayProjects() {
     tasksContainer.textContent = "";
     if (logic.getProjects().length === 0) {
-      const noProjectsInfo = document.createElement("p");
-      noProjectsInfo.textContent = "no projects to show";
-      projectsContainer.appendChild(noProjectsInfo);
+      const infoCard = createInfoCard("no projects to show");
+      tasksContainer.appendChild(infoCard);
       return;
-    } else {
-      for (let project of logic.getProjects()) {
-        const projectCard = createProjectCard(
-          project.title,
-          project.description,
-          project.id,
-        );
-        projectsContainer.appendChild(projectCard);
-      }
+    } 
+    for (let project of logic.getProjects()) {
+      const projectCard = createProjectCard(
+        project.title,
+        project.description,
+        project.id,
+      );
+      projectsContainer.appendChild(projectCard);
+    }
 
-      projectsContainer
-        .querySelectorAll("[click-action='deleteProject'")
-        .forEach((element) => {
-          element.addEventListener("click", () => {
-            const id = parseInt(element.getAttribute("item-id"));
-            projectsContainer.querySelector(`[item-id="${id}"`).remove();
-            logic.removeProject(id);
-            if (id === logic.getActiveProjectId()) {
-              displayTasks();
-            }
-          });
-        });
-
-      //select project
-      projectsContainer.querySelectorAll(".project-card").forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (event.target.getAttribute("class") === "delete-button") return;
+    projectsContainer
+      .querySelectorAll("[click-action='deleteProject'")
+      .forEach((element) => {
+        element.addEventListener("click", () => {
           const id = parseInt(element.getAttribute("item-id"));
-          selectProject(id);
-          displayTasks();
+          projectsContainer.querySelector(`[item-id="${id}"`).remove();
+          logic.removeProject(id);
+          if (id === logic.getActiveProjectId()) {
+            displayTasks();
+          }
         });
       });
-    }
+
+    //select project
+    projectsContainer.querySelectorAll(".project-card").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (event.target.getAttribute("class") === "delete-button") return;
+        const id = parseInt(element.getAttribute("item-id"));
+        selectProject(id);
+        displayTasks();
+      });
+    });
   }
 
   displayProjects();
