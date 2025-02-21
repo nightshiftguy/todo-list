@@ -34,7 +34,10 @@ export default function createTodoStorageController() {
         }
         return value;
       });
-      return todos.projects;
+      if(todos)
+        return todos.projects;
+      else
+        return;
     } else {
       console.log("local storage not available");
     }

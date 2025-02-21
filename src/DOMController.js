@@ -7,45 +7,11 @@ import createTaskCard from "./DOM/taskCard";
 
 import todoLogic from "./todoLogic";
 
-import createTodoStorageController from "./todoStorageController";
-
-import { format } from "date-fns";
+//import { format } from "date-fns";
 
 export default function createDOMController() {
   const logic = todoLogic();
-  const storageController = createTodoStorageController();
-
-  function addTestTodos() {
-    logic.addProject(["123", "123"]);
-    logic.createTodo([
-      "title",
-      "description",
-      format(new Date(2025, 2, 10), "MM/dd/yyyy"),
-      "low",
-      true,
-    ]);
-    logic.createTodo([
-      "title",
-      "description",
-      format(new Date(2025, 2, 20), "MM/dd/yyyy"),
-      "medium",
-      true,
-    ]);
-    logic.createTodo([
-      "title",
-      "description",
-      format(new Date(2025, 2, 30), "MM/dd/yyyy"),
-      "high",
-      true,
-    ]);
-    logic.changeTodoCompletion(0);
-    logic.addProject(["123abc", "123"]);
-    storageController.saveTodos(logic.projects);
-  }
-
-  if (storageController.importData()[0] === undefined) addTestTodos();
-
-  logic.projects = storageController.importData();
+  console.log(logic.projects)
 
   const container = document.querySelector(".container");
   const mainContainer = document.createElement("div");
@@ -87,7 +53,6 @@ export default function createDOMController() {
           const id = element.getAttribute("item-id");
           tasksContainer.querySelector(`[item-id="${id}"`).remove();
           logic.removeTodo(parseInt(id));
-          storageController.saveTodos(logic.projects);
         });
       });
   }
@@ -133,7 +98,6 @@ export default function createDOMController() {
             if (id === logic.activeProjectId) {
               displayTasks();
             }
-            storageController.saveTodos(logic.projects);
           });
         });
 
