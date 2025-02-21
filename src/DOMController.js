@@ -26,7 +26,7 @@ export default function createDOMController() {
     tasksContainer.textContent = "";
     if (
       logic.getActiveProject() === undefined ||
-      logic.getActiveProjectTasks()[0] === undefined
+      logic.getActiveProjectTasks().length === 0
     ) {
       const noTasksInfo = document.createElement("p");
       noTasksInfo.textContent = "this project is empty";
@@ -72,7 +72,7 @@ export default function createDOMController() {
 
   function displayProjects() {
     tasksContainer.textContent = "";
-    if (logic.getProjects()[0] === undefined) {
+    if (logic.getProjects().length === 0) {
       const noProjectsInfo = document.createElement("p");
       noProjectsInfo.textContent = "no projects to show";
       projectsContainer.appendChild(noProjectsInfo);
