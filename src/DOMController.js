@@ -3,7 +3,7 @@ import createProjectCard from "./DOM/projectCard";
 import createTaskCard from "./DOM/taskCard";
 //import createNewTaskDialog from "./DOM/newTaskDialog"
 //import createNewTaskAndSelectProjectDialog from "./DOM/newTaskAndSelectProjectDialog"
-//import createAddButton from "./DOM/addButton"
+import createAddButton from "./DOM/addButton";
 import createInfoCard from "./DOM/infoCard";
 
 import todoLogic from "./todoLogic";
@@ -31,6 +31,7 @@ export default function createDOMController() {
     ) {
       const infoCard = createInfoCard("this project is empty");
       tasksContainer.appendChild(infoCard);
+      tasksContainer.appendChild(createAddButton());
       return;
     }
 
@@ -45,6 +46,8 @@ export default function createDOMController() {
       );
       tasksContainer.appendChild(taskCard);
     }
+
+    tasksContainer.appendChild(createAddButton());
 
     tasksContainer
       .querySelectorAll("[click-action='deleteTask'")
@@ -63,7 +66,7 @@ export default function createDOMController() {
     );
     if (oldActiveProject !== null && oldActiveProject !== undefined)
       oldActiveProject.setAttribute("selected", "false");
-    logic.setActiveProjectId(id)
+    logic.setActiveProjectId(id);
     const newActiveProject = projectsContainer.querySelector(
       `[item-id="${logic.getActiveProjectId()}"`,
     );
@@ -76,8 +79,9 @@ export default function createDOMController() {
     if (logic.getProjects().length === 0) {
       const infoCard = createInfoCard("no projects to show");
       tasksContainer.appendChild(infoCard);
+      projectsContainer.appendChild(createAddButton());
       return;
-    } 
+    }
     for (let project of logic.getProjects()) {
       const projectCard = createProjectCard(
         project.title,
@@ -86,6 +90,8 @@ export default function createDOMController() {
       );
       projectsContainer.appendChild(projectCard);
     }
+
+    projectsContainer.appendChild(createAddButton());
 
     projectsContainer
       .querySelectorAll("[click-action='deleteProject'")
