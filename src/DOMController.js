@@ -8,8 +8,6 @@ import createInfoCard from "./DOM/infoCard";
 
 import todoLogic from "./todoLogic";
 
-//import { format } from "date-fns";
-
 const logic = todoLogic();
 
 function createProjectsContainerController(){

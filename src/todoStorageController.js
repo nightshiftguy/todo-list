@@ -26,6 +26,7 @@ export default function createTodoStorageController() {
           for (let projectStringified of value) {
             let project = createProject(projectStringified.projectProperties);
             for (let taskProperties of projectStringified.projectTasks) {
+              taskProperties[2] = new Date(taskProperties[2])
               project.addTask(taskProperties);
             }
             projects.push(project);

@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from "date-fns";
+
 export default function createTaskCard(
   title,
   description,
@@ -23,7 +25,11 @@ export default function createTaskCard(
   priorityInfo.textContent = priority;
 
   const timeToFinishTaskInfo = document.createElement("p");
-  timeToFinishTaskInfo.textContent = dueDate;
+  if(dueDate.getTime()>new Date().getTime()){
+    timeToFinishTaskInfo.textContent = "Due in " + formatDistanceToNow(dueDate);
+  } else {
+    timeToFinishTaskInfo.textContent = "Overdue for "+formatDistanceToNow(dueDate);
+  }
 
   const deleteButton = document.createElement("div");
   deleteButton.setAttribute("class", "delete-button");

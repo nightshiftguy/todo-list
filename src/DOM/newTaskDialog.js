@@ -25,6 +25,18 @@ function createSelectInput(name, optionsNames, id) {
   return [label, select];
 }
 
+function createDateInput(name,id){
+  const label = document.createElement("label");
+  label.setAttribute("for", id);
+  label.textContent = name;
+
+  const input = document.createElement("input");
+  input.setAttribute("type","date");
+  input.setAttribute("id", id);
+
+  return [label, input];
+}
+
 export default function createNewTaskDialog() {
   const newTaskDialog = document.createElement("dialog");
   const dialogTitle = document.createElement("h1");
@@ -35,7 +47,7 @@ export default function createNewTaskDialog() {
   const inputs = [
     ...createTextInput("title", "title-input"),
     ...createTextInput("description","description-input"),
-    ...createTextInput("due date","date-input"),
+    ...createDateInput("due date","date-input"),
     ...createSelectInput("priority", ["low", "medium", "high"], "priority-input"),
   ];
 
@@ -45,7 +57,7 @@ export default function createNewTaskDialog() {
     e.preventDefault();
     const title = form.querySelector("#title-input").value;
     const description = form.querySelector("#description-input").value;
-    const dueDate = form.querySelector("#date-input").value;
+    const dueDate = new Date(form.querySelector("#date-input").value);
     const priority = form.querySelector("#priority-input").value;
 
     const submitEvent = new CustomEvent("submit-new-task",{

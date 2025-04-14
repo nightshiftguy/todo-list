@@ -1,6 +1,5 @@
 import createProject from "./logic/project.js";
 import createTodoStorageController from "./todoStorageController.js";
-import { format } from "date-fns";
 
 export default function todoLogic() {
   let currentLastProjectId = 0;
@@ -84,21 +83,21 @@ export default function todoLogic() {
     createTodo([
       "title",
       "description",
-      format(new Date(2025, 2, 10), "MM/dd/yyyy"),
+      new Date(2025, 2, 10),
       "low",
       true,
     ]);
     createTodo([
       "title",
       "description",
-      format(new Date(2025, 2, 20), "MM/dd/yyyy"),
+      new Date(2025, 2, 20),
       "medium",
       true,
     ]);
     createTodo([
       "title",
       "description",
-      format(new Date(2025, 2, 30), "MM/dd/yyyy"),
+      new Date(2025, 2, 30),
       "high",
       true,
     ]);
