@@ -1,7 +1,7 @@
 import createProjectCard from "./DOM/projectCard";
 //import createNewProjectDialog from "./DOM/newProjectDialog"
 import createTaskCard from "./DOM/taskCard";
-//import createNewTaskDialog from "./DOM/newTaskDialog"
+import createNewTaskDialog from "./DOM/newTaskDialog";
 //import createNewTaskAndSelectProjectDialog from "./DOM/newTaskAndSelectProjectDialog"
 import createAddButton from "./DOM/addButton";
 import createInfoCard from "./DOM/infoCard";
@@ -58,6 +58,14 @@ export default function createDOMController() {
           logic.removeTodo(parseInt(id));
         });
       });
+
+    tasksContainer.querySelectorAll(".add-button").forEach((element) => {
+      element.addEventListener("click", () => {
+        const newTaskDialog = createNewTaskDialog();
+        container.appendChild(newTaskDialog);
+        newTaskDialog.showModal();
+      });
+    });
   }
 
   function selectProject(id) {
