@@ -1,5 +1,5 @@
 import createProjectCard from "./DOM/projectCard";
-//import createNewProjectDialog from "./DOM/newProjectDialog"
+import createNewProjectDialog from "./DOM/newProjectDialog"
 import createTaskCard from "./DOM/taskCard";
 import createNewTaskDialog from "./DOM/newTaskDialog";
 //import createNewTaskAndSelectProjectDialog from "./DOM/newTaskAndSelectProjectDialog"
@@ -93,19 +93,31 @@ export default function createDOMController() {
   const projectsContainerController = createProjectsContainerController();
   const projectsContainer = projectsContainerController.projectsContainer;
 
+  document.addEventListener("add-project",()=>{
+    const newProjectDialog = createNewProjectDialog();
+    container.appendChild(newProjectDialog);
+    newProjectDialog.showModal();
+  })
+  document.addEventListener("submit-new-project",(event)=>{
+    logic.addProject(event.detail.properties)
+    projectsContainerController.displayProjects();
+    projectsContainerController.selectProject(logic.getActiveProjectId());
+    tasksContainerController.displayTasks();
+  })
+
   const tasksContainerController = createTasksContainerController();
   const tasksContainer = tasksContainerController.tasksContainer;
 
-
-  document.addEventListener("submit-new-task",(event)=>{
-    logic.createTodo(event.detail.properties);
-    tasksContainerController.displayTasks();
-  })
   document.addEventListener("add-task",()=>{
     const newTaskDialog = createNewTaskDialog();
     container.appendChild(newTaskDialog);
     newTaskDialog.showModal();
   })
+  document.addEventListener("submit-new-task",(event)=>{
+    logic.createTodo(event.detail.properties);
+    tasksContainerController.displayTasks();
+  })
+  
 
   document.addEventListener("delete", (event)=>{
     let id = event.detail.id;
@@ -116,6 +128,7 @@ export default function createDOMController() {
     if(event.detail.itemToDelete==="project"){
       projectsContainer.querySelector(`[item-id="${id}"`).remove();
       logic.removeProject(id);
+      projectsContainerController.selectProject(logic.getActiveProjectId());
       if (id === logic.getActiveProjectId()) {
         tasksContainerController.displayTasks();
       }
@@ -131,6 +144,7 @@ export default function createDOMController() {
     element.addEventListener("click", (event) => {
       if (event.target.getAttribute("class") === "delete-button") return;
       const id = parseInt(element.getAttribute("item-id"));
+      console.log(id)
       projectsContainerController.selectProject(id);
       tasksContainerController.displayTasks();
     });
