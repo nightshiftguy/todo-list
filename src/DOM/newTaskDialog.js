@@ -47,7 +47,13 @@ export default function createNewTaskDialog() {
     const description = form.querySelector("#description-input").value;
     const dueDate = form.querySelector("#date-input").value;
     const priority = form.querySelector("#priority-input").value;
-    console.log([title,description,dueDate,priority])
+
+    const submitEvent = new CustomEvent("submit-new-task",{
+      bubbles: true,
+      detail: {"properties":[title,description,dueDate,priority,false]},
+    });
+    confirmButton.dispatchEvent(submitEvent);
+    newTaskDialog.close();
   });
 
   inputs.forEach((input) => {

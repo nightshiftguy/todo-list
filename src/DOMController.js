@@ -23,6 +23,11 @@ export default function createDOMController() {
   const tasksContainer = document.createElement("div");
   tasksContainer.setAttribute("class", "tasks-container");
 
+  document.addEventListener("submit-new-task",(event)=>{
+    logic.createTodo(event.detail.properties);
+    displayTasks();
+  })
+
   function displayTasks() {
     tasksContainer.textContent = "";
     if (
