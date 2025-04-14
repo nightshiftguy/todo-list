@@ -18,17 +18,19 @@ export default function createTaskCard(
   const descriptionParagraph = document.createElement("p");
   descriptionParagraph.textContent = description;
 
-  const completedInfo = document.createElement("p");
-  completedInfo.textContent = completed;
-
   const priorityInfo = document.createElement("p");
   priorityInfo.textContent = priority;
 
   const timeToFinishTaskInfo = document.createElement("p");
-  if(dueDate.getTime()>new Date().getTime()){
-    timeToFinishTaskInfo.textContent = "Due in " + formatDistanceToNow(dueDate);
-  } else {
-    timeToFinishTaskInfo.textContent = "Overdue for "+formatDistanceToNow(dueDate);
+  if(completed){
+    timeToFinishTaskInfo.textContent = "completed";
+  }
+  else{
+    if(dueDate.getTime()>new Date().getTime()){
+      timeToFinishTaskInfo.textContent = "Due in " + formatDistanceToNow(dueDate);
+    } else {
+      timeToFinishTaskInfo.textContent = "Overdue for "+formatDistanceToNow(dueDate);
+    }
   }
 
   const deleteButton = document.createElement("div");
@@ -46,7 +48,6 @@ export default function createTaskCard(
 
   taskCard.appendChild(titleHeader);
   taskCard.appendChild(descriptionParagraph);
-  taskCard.appendChild(completedInfo);
   taskCard.appendChild(priorityInfo);
   taskCard.appendChild(timeToFinishTaskInfo);
   taskCard.appendChild(deleteButton);

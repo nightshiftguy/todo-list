@@ -85,7 +85,7 @@ export default function todoLogic() {
       "description",
       new Date(2025, 2, 10),
       "low",
-      true,
+      false,
     ]);
     createTodo([
       "title",
@@ -99,7 +99,7 @@ export default function todoLogic() {
       "description",
       new Date(2025, 2, 30),
       "high",
-      true,
+      false,
     ]);
     addProject(["123abc", "123"]);
   }
