@@ -30,6 +30,14 @@ export default function createTaskCard(
   deleteButton.setAttribute("click-action", "deleteTask");
   deleteButton.setAttribute("item-id", id);
 
+  deleteButton.addEventListener("click",()=>{
+    const deleteEvent = new CustomEvent("delete",{
+      bubbles: true,
+      detail:{itemToDelete:"task", id}
+    });
+    deleteButton.dispatchEvent(deleteEvent);
+  })
+
   taskCard.appendChild(titleHeader);
   taskCard.appendChild(descriptionParagraph);
   taskCard.appendChild(completedInfo);
