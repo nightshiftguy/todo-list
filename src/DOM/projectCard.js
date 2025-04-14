@@ -20,6 +20,15 @@ export default function createProjectCard(title, description, id) {
     deleteButton.dispatchEvent(deleteEvent);
   })
 
+  projectCard.addEventListener("click",(event)=>{
+    if (event.target.getAttribute("class") === "delete-button") return;
+    const deleteEvent = new CustomEvent("select-project",{
+      bubbles: true,
+      detail:{id}
+    });
+    deleteButton.dispatchEvent(deleteEvent);
+  })
+
   projectCard.appendChild(titleHeader);
   projectCard.appendChild(descriptionParagraph);
   projectCard.appendChild(deleteButton);

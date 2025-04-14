@@ -1,5 +1,5 @@
 import createProjectCard from "./DOM/projectCard";
-import createNewProjectDialog from "./DOM/newProjectDialog"
+import createNewProjectDialog from "./DOM/newProjectDialog";
 import createTaskCard from "./DOM/taskCard";
 import createNewTaskDialog from "./DOM/newTaskDialog";
 //import createNewTaskAndSelectProjectDialog from "./DOM/newTaskAndSelectProjectDialog"
@@ -10,7 +10,7 @@ import todoLogic from "./todoLogic";
 
 const logic = todoLogic();
 
-function createProjectsContainerController(){
+function createProjectsContainerController() {
   const projectsContainer = document.createElement("div");
   projectsContainer.setAttribute("class", "projects-container");
 
@@ -44,14 +44,14 @@ function createProjectsContainerController(){
       );
       projectsContainer.appendChild(projectCard);
     }
-    
+
     projectsContainer.appendChild(createAddButton("project"));
   }
 
-  return {projectsContainer, selectProject, displayProjects}
+  return { projectsContainer, selectProject, displayProjects };
 }
 
-function createTasksContainerController(){
+function createTasksContainerController() {
   const tasksContainer = document.createElement("div");
   tasksContainer.setAttribute("class", "tasks-container");
 
@@ -82,7 +82,7 @@ function createTasksContainerController(){
     tasksContainer.appendChild(createAddButton("task"));
   }
 
-  return {tasksContainer, displayTasks}
+  return { tasksContainer, displayTasks };
 }
 
 export default function createDOMController() {
@@ -93,39 +93,38 @@ export default function createDOMController() {
   const projectsContainerController = createProjectsContainerController();
   const projectsContainer = projectsContainerController.projectsContainer;
 
-  document.addEventListener("add-project",()=>{
+  document.addEventListener("add-project", () => {
     const newProjectDialog = createNewProjectDialog();
     container.appendChild(newProjectDialog);
     newProjectDialog.showModal();
-  })
-  document.addEventListener("submit-new-project",(event)=>{
-    logic.addProject(event.detail.properties)
+  });
+  document.addEventListener("submit-new-project", (event) => {
+    logic.addProject(event.detail.properties);
     projectsContainerController.displayProjects();
     projectsContainerController.selectProject(logic.getActiveProjectId());
     tasksContainerController.displayTasks();
-  })
+  });
 
   const tasksContainerController = createTasksContainerController();
   const tasksContainer = tasksContainerController.tasksContainer;
 
-  document.addEventListener("add-task",()=>{
+  document.addEventListener("add-task", () => {
     const newTaskDialog = createNewTaskDialog();
     container.appendChild(newTaskDialog);
     newTaskDialog.showModal();
-  })
-  document.addEventListener("submit-new-task",(event)=>{
+  });
+  document.addEventListener("submit-new-task", (event) => {
     logic.createTodo(event.detail.properties);
     tasksContainerController.displayTasks();
-  })
-  
+  });
 
-  document.addEventListener("delete", (event)=>{
+  document.addEventListener("delete", (event) => {
     let id = event.detail.id;
-    if(event.detail.itemToDelete === "task"){
+    if (event.detail.itemToDelete === "task") {
       tasksContainer.querySelector(`[item-id="${id}"`).remove();
       logic.removeTodo(parseInt(id));
     }
-    if(event.detail.itemToDelete==="project"){
+    if (event.detail.itemToDelete === "project") {
       projectsContainer.querySelector(`[item-id="${id}"`).remove();
       logic.removeProject(id);
       projectsContainerController.selectProject(logic.getActiveProjectId());
@@ -133,21 +132,15 @@ export default function createDOMController() {
         tasksContainerController.displayTasks();
       }
     }
-  })
-  
+  });
+
   projectsContainerController.displayProjects();
   projectsContainerController.selectProject(logic.getActiveProjectId());
   tasksContainerController.displayTasks();
-  
-  //select project
-  projectsContainer.querySelectorAll(".project-card").forEach((element) => {
-    element.addEventListener("click", (event) => {
-      if (event.target.getAttribute("class") === "delete-button") return;
-      const id = parseInt(element.getAttribute("item-id"));
-      console.log(id)
-      projectsContainerController.selectProject(id);
-      tasksContainerController.displayTasks();
-    });
+
+  document.addEventListener("select-project", (event) => {
+    projectsContainerController.selectProject(event.detail.id);
+    tasksContainerController.displayTasks();
   });
 
   mainContainer.appendChild(projectsContainer);
