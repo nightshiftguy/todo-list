@@ -1,41 +1,4 @@
-function createTextInput(name, id) {
-  const label = document.createElement("label");
-  label.setAttribute("for", id);
-  label.textContent = name;
-
-  const input = document.createElement("input");
-  input.setAttribute("id", id);
-
-  return [label, input];
-}
-
-function createSelectInput(name, optionsNames, id) {
-  const label = document.createElement("label");
-  label.setAttribute("for", id);
-  label.textContent = name;
-
-  const select = document.createElement("select");
-  select.setAttribute("id", id);
-  optionsNames.forEach((optionName) => {
-    const option = document.createElement("option");
-    option.textContent = optionName;
-    select.appendChild(option);
-  });
-
-  return [label, select];
-}
-
-function createDateInput(name,id){
-  const label = document.createElement("label");
-  label.setAttribute("for", id);
-  label.textContent = name;
-
-  const input = document.createElement("input");
-  input.setAttribute("type","date");
-  input.setAttribute("id", id);
-
-  return [label, input];
-}
+import { createTextInput,createSelectInput, createDateInput, createErrorMessage } from "./dialogElements";
 
 export default function createNewTaskDialog() {
   const newTaskDialog = document.createElement("dialog");
@@ -45,11 +8,24 @@ export default function createNewTaskDialog() {
   const form = document.createElement("form");
 
   const inputs = [
-    ...createTextInput("title", "title-input"),
-    ...createTextInput("description","description-input"),
-    ...createDateInput("due date","date-input"),
+    ...createTextInput("title", "title-input",true),
+    ...createTextInput("description","description-input",false),
+    ...createDateInput("due date","date-input",true),
     ...createSelectInput("priority", ["low", "medium", "high"], "priority-input"),
   ];
+
+  const errorMessage = createErrorMessage();
+
+  function validateInputs(title, dueDate){
+    if(title === "" || dueDate === NaN || dueDate ===""){
+      errorMessage.showErrorMessage("fields with \"*\" can't be empty")
+      return false;
+    }
+    else {
+      errorMessage.hideErrorMessage()
+      return true;
+    }
+  }
 
   const confirmButton = document.createElement("button");
   confirmButton.textContent = "confirm";
@@ -57,21 +33,27 @@ export default function createNewTaskDialog() {
     e.preventDefault();
     const title = form.querySelector("#title-input").value;
     const description = form.querySelector("#description-input").value;
-    const dueDate = new Date(form.querySelector("#date-input").value);
+    const dueDate = form.querySelector("#date-input").value;
     const priority = form.querySelector("#priority-input").value;
+
+    if(!validateInputs(title, dueDate)){
+      return;
+    }
 
     const submitEvent = new CustomEvent("submit-new-task",{
       bubbles: true,
-      detail: {"properties":[title,description,dueDate,priority,false]},
+      detail: {"properties":[title,description,new Date(dueDate),priority,false]},
     });
     confirmButton.dispatchEvent(submitEvent);
     newTaskDialog.close();
   });
 
+
   inputs.forEach((input) => {
     form.appendChild(input);
   });
 
+  form.appendChild(errorMessage.getErrorMessage())
   form.appendChild(confirmButton);
 
   newTaskDialog.appendChild(dialogTitle);

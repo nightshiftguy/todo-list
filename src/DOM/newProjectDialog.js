@@ -1,13 +1,5 @@
-function createTextInput(name, id) {
-    const label = document.createElement("label");
-    label.setAttribute("for", id);
-    label.textContent = name;
-  
-    const input = document.createElement("input");
-    input.setAttribute("id", id);
-  
-    return [label, input];
-}
+import { createTextInput, createErrorMessage } from "./dialogElements";
+
   
 export default function createNewProjectDialog() {
     const newProjectDialog = document.createElement("dialog");
@@ -17,9 +9,22 @@ export default function createNewProjectDialog() {
     const form = document.createElement("form");
   
     const inputs = [
-      ...createTextInput("title", "title-input"),
-      ...createTextInput("description","description-input"),
+      ...createTextInput("title", "title-input", true),
+      ...createTextInput("description","description-input", false),
     ];
+
+    const errorMessage = createErrorMessage();
+
+    function validateInputs(title){
+    if(title === ""){
+      errorMessage.showErrorMessage("fields with \"*\" can't be empty")
+      return false;
+    }
+    else {
+      errorMessage.hideErrorMessage()
+      return true;
+    }
+  }
   
     const confirmButton = document.createElement("button");
     confirmButton.textContent = "confirm";
@@ -28,6 +33,10 @@ export default function createNewProjectDialog() {
       const title = form.querySelector("#title-input").value;
       const description = form.querySelector("#description-input").value;
   
+      if(!validateInputs(title)){
+      return;
+    }
+
       const submitEvent = new CustomEvent("submit-new-project",{
         bubbles: true,
         detail: {"properties":[title,description]},
@@ -40,6 +49,7 @@ export default function createNewProjectDialog() {
       form.appendChild(input);
     });
   
+    form.appendChild(errorMessage.getErrorMessage());
     form.appendChild(confirmButton);
   
     newProjectDialog.appendChild(dialogTitle);
