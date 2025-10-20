@@ -5,9 +5,10 @@ function createTextInput(name, id, required) {
   
   const input = document.createElement("input");
   input.setAttribute("id", id);
+  input.setAttribute("type", "text");
   
   if(required){
-    input.setAttribute("required",true)
+    input.required = true;
   }
 
   return [label, input];
@@ -39,7 +40,7 @@ function createDateInput(name,id, required){
   input.setAttribute("id", id);
 
   if(required){
-    input.setAttribute("required",true)
+    input.required = true;
   }
 
   return [label, input];
@@ -55,12 +56,12 @@ function createErrorMessage(){
 
   function showErrorMessage(errorText){
     errorMessage.textContent = errorText;
-    errorMessage.style.display = "block";
+    errorMessage.style.visibility = "visible";
   }
 
   function hideErrorMessage(){
     errorMessage.textContent = "";
-    errorMessage.style.display = "hidden";
+    errorMessage.style.visibility = "hidden";
   }
 
   return {getErrorMessage, showErrorMessage, hideErrorMessage}

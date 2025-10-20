@@ -89,13 +89,16 @@ export default function createDOMController() {
   const container = document.querySelector(".container");
   const mainContainer = document.createElement("div");
   mainContainer.setAttribute("class", "main-container");
-
+  
   const projectsContainerController = createProjectsContainerController();
+  const newProjectDialog = createNewProjectDialog();
+  container.appendChild(newProjectDialog);
+
   const projectsContainer = projectsContainerController.projectsContainer;
+  const newTaskDialog = createNewTaskDialog();
+  container.appendChild(newTaskDialog);
 
   document.addEventListener("add-project", () => {
-    const newProjectDialog = createNewProjectDialog();
-    container.appendChild(newProjectDialog);
     newProjectDialog.showModal();
   });
   document.addEventListener("submit-new-project", (event) => {
@@ -109,8 +112,6 @@ export default function createDOMController() {
   const tasksContainer = tasksContainerController.tasksContainer;
 
   document.addEventListener("add-task", () => {
-    const newTaskDialog = createNewTaskDialog();
-    container.appendChild(newTaskDialog);
     newTaskDialog.showModal();
   });
   document.addEventListener("submit-new-task", (event) => {

@@ -1,16 +1,17 @@
 import { createTextInput, createErrorMessage } from "./dialogElements";
 
-  
 export default function createNewProjectDialog() {
-    const newProjectDialog = document.createElement("dialog");
-    const dialogTitle = document.createElement("h1");
-    dialogTitle.textContent = "Create new task:";
-  
-    const form = document.createElement("form");
+  const newProjectDialog = document.createElement("dialog");  
+  const form = document.createElement("form");
+  form.noValidate = true;
+
+  const dialogTitle = document.createElement("h1");
+  dialogTitle.textContent = "Create new project:";
+  form.appendChild(dialogTitle);
   
     const inputs = [
-      ...createTextInput("title", "title-input", true),
-      ...createTextInput("description","description-input", false),
+      ...createTextInput("title", "project-title-input", true),
+      ...createTextInput("description","project-description-input", false),
     ];
 
     const errorMessage = createErrorMessage();
@@ -30,8 +31,8 @@ export default function createNewProjectDialog() {
     confirmButton.textContent = "confirm";
     confirmButton.addEventListener("click", (e) => {
       e.preventDefault();
-      const title = form.querySelector("#title-input").value;
-      const description = form.querySelector("#description-input").value;
+      const title = form.querySelector("#project-title-input").value;
+      const description = form.querySelector("#project-description-input").value;
   
       if(!validateInputs(title)){
       return;
@@ -50,9 +51,8 @@ export default function createNewProjectDialog() {
     });
   
     form.appendChild(errorMessage.getErrorMessage());
+    
     form.appendChild(confirmButton);
-  
-    newProjectDialog.appendChild(dialogTitle);
     newProjectDialog.appendChild(form);
   
     return newProjectDialog;
