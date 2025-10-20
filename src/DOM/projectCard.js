@@ -1,3 +1,5 @@
+import deleteIconSrc from "../icons/delete.svg";
+
 export default function createProjectCard(title, description, id) {
   const projectCard = document.createElement("div");
   projectCard.setAttribute("class", "project-card");
@@ -5,9 +7,14 @@ export default function createProjectCard(title, description, id) {
 
   const titleHeader = document.createElement("h2");
   titleHeader.textContent = title;
+
   const descriptionParagraph = document.createElement("p");
-  descriptionParagraph.textContent = description;
+  descriptionParagraph.textContent = "description: " + description;
+  
   const deleteButton = document.createElement("div");
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = deleteIconSrc;
+  deleteButton.appendChild(deleteIcon);
   deleteButton.setAttribute("class", "delete-button");
   deleteButton.setAttribute("click-action", "deleteProject");
   deleteButton.setAttribute("item-id", id);

@@ -2,7 +2,7 @@ export default function createAddButton(itemToAdd) {
   const container = document.createElement("div");
   const addButton = document.createElement("button");
   addButton.setAttribute("class", "add-button");
-  addButton.textContent = "+";
+  addButton.textContent = `Add ${itemToAdd}`;
 
   addButton.addEventListener("click",()=>{
     const addEvent = new CustomEvent(`add-${itemToAdd}`,{

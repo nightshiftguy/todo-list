@@ -1,44 +1,107 @@
+:root{
+   --background-color:rgb(0,0,0);
+   --text-color:rgb(243, 233, 233);
+   --main-clr:rgb(206, 216, 224);
+   --main-clr-black:rgb(34, 34, 34);
+   --select-project:rgb(138, 43, 226);
+   --delete:rgb(255,0,0);
+   --error-text:rgb(59, 0, 0);
+   --error-background:rgb(255, 194, 194);
+   --required-field:rgb(255, 120, 120);
+   --card-detail-header-project:rgb(70, 70, 70);
+   --add-button-text:rgb(222, 238, 222);
+   --add-button-background:rgb(9, 46, 9);
+   --add-button-hover-background:rgb(12, 63, 12);
+}
+
 body {
-  background-color: black;
-  color: white;
-  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin:0;
+  padding:0;
+  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6{
+  margin:0;
+}
+
+button{
+  font-size: inherit;
+  border:1px solid;
+  padding:0.5em 0.5em;
+  border-radius: 0.5em;
+}
+
+button:hover{
+  cursor:pointer;
+  outline:1px solid gray;
 }
 
 .main-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+/* projects */
 .projects-container {
-  background-color: aliceblue;
+  background-color: var(--main-clr);
+  padding: 10px;
   flex: 1 1 0;
+
+  display:flex;
+  flex-direction: column;
+  gap:20px;
 }
 
-.tasks-container {
-  flex: 3 1 0;
+.projects-container h1{
+  color: var(--main-clr-black)
 }
 
 .project-card {
-  background-color: rgb(5, 5, 5);
-  margin-bottom: 20px;
+  background-color: var(--main-clr-black);
+  padding:10px;
+  border-radius: 10px;
+}
+
+.project-card:hover {
+  cursor:pointer;
+  filter:brightness(130%)
 }
 
 .project-card[selected="true"] {
-  background-color: blueviolet;
+  background-color: var(--select-project);
 }
 
-.delete-button {
-  width: 20px;
-  height: 20px;
-  background-color: red;
+/* tasks */
+.tasks-container {
+  flex: 3 1 0;
+  padding: 10px;
+
+  display:flex;
+  flex-direction: column;
+  gap:20px;
 }
 
+.task-card {
+  background-color: var(--main-clr-black);
+  padding:10px;
+  border-radius: 10px;
+}
+
+.task-details{
+  display: flex;
+  column-gap:2em;
+  flex-wrap: wrap;
+}
+
+/* dialogs and forms */
 .error-message{
-  height: 1em;
+  height: 1.5em;
   text-align: center;
   grid-column: span 2;
-  color:rgb(59, 0, 0);
-  background-color: rgb(255, 194, 194);
+  color:var(--error-text);
+  background-color: var(--error-background);
   visibility:hidden;
 }
 
@@ -48,7 +111,7 @@ label::after{
 
 label:has(+ input:required):before{
   content:"*";
-  color:rgb(255, 120, 120);
+  color:var(--required-field);
 }
 
 form{
@@ -73,7 +136,6 @@ dialog::backdrop{
 }
 
 dialog button{
-  padding:0.5em 0.5em;
   grid-column: span 2;
   justify-self: center;
 }
@@ -81,4 +143,39 @@ dialog button{
 dialog h1{
   grid-column: span 2;
   justify-self: center;
+}
+
+/* other */
+.add-button{
+  border:1px var(--add-button-background) solid;
+  color:var(--add-button-text);
+  background-color: var(--add-button-background);
+}
+
+.add-button:hover{
+  cursor:pointer;
+  outline:1px solid gray;
+  background-color: var(--add-button-hover-background);
+}
+
+.delete-button{
+  border-radius: 15px;
+  width:30px;
+  height:30px;
+  background-color: var(--error-background);
+}
+
+.delete-button:hover{
+  cursor:pointer;
+  outline:1px solid gray;
+  background-color: var(--required-field);
+}
+
+.delete-button > img{
+  position:relative;
+  transform: translate(-50%, -50%);
+  height: 25px;
+  width: 25px;
+  top: 50%;
+  left: 50%;
 }

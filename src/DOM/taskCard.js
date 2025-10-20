@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
+import deleteIconSrc from "../icons/delete.svg";
 
 export default function createTaskCard(
   title,
@@ -15,25 +16,31 @@ export default function createTaskCard(
   const titleHeader = document.createElement("h2");
   titleHeader.textContent = title;
 
-  const descriptionParagraph = document.createElement("p");
-  descriptionParagraph.textContent = description;
+  const taskDetails = document.createElement("div");
+  taskDetails.setAttribute("class","task-details");
 
-  const priorityInfo = document.createElement("p");
-  priorityInfo.textContent = priority;
+    const descriptionParagraph = document.createElement("p");
+    descriptionParagraph.textContent = "description: " + description;
 
-  const timeToFinishTaskInfo = document.createElement("p");
-  if(completed){
-    timeToFinishTaskInfo.textContent = "completed";
-  }
-  else{
-    if(dueDate.getTime()>new Date().getTime()){
-      timeToFinishTaskInfo.textContent = "Due in " + formatDistanceToNow(dueDate);
-    } else {
-      timeToFinishTaskInfo.textContent = "Overdue for "+formatDistanceToNow(dueDate);
+    const priorityInfo = document.createElement("p");
+    priorityInfo.textContent = "priority: "+ priority;
+
+    const timeToFinishTaskInfo = document.createElement("p");
+    if(completed){
+      timeToFinishTaskInfo.textContent = "completed";
     }
-  }
+    else{
+      if(dueDate.getTime()>new Date().getTime()){
+        timeToFinishTaskInfo.textContent = "Due in " + formatDistanceToNow(dueDate);
+      } else {
+        timeToFinishTaskInfo.textContent = "Overdue for "+formatDistanceToNow(dueDate);
+      }
+    }
 
   const deleteButton = document.createElement("div");
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = deleteIconSrc;
+  deleteButton.appendChild(deleteIcon);
   deleteButton.setAttribute("class", "delete-button");
   deleteButton.setAttribute("click-action", "deleteTask");
   deleteButton.setAttribute("item-id", id);
@@ -47,9 +54,10 @@ export default function createTaskCard(
   })
 
   taskCard.appendChild(titleHeader);
-  taskCard.appendChild(descriptionParagraph);
-  taskCard.appendChild(priorityInfo);
-  taskCard.appendChild(timeToFinishTaskInfo);
+    taskDetails.appendChild(descriptionParagraph);
+    taskDetails.appendChild(priorityInfo);
+    taskDetails.appendChild(timeToFinishTaskInfo);
+  taskCard.appendChild(taskDetails)
   taskCard.appendChild(deleteButton);
 
   return taskCard;

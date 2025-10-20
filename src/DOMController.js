@@ -30,6 +30,11 @@ function createProjectsContainerController() {
 
   function displayProjects() {
     projectsContainer.textContent = "";
+
+    const projectsHeader = document.createElement("h1");
+    projectsHeader.textContent = "Projects:"
+    projectsContainer.appendChild(projectsHeader);
+
     if (logic.getProjects().length === 0) {
       const infoCard = createInfoCard("no projects to show");
       projectsContainer.appendChild(infoCard);
@@ -57,6 +62,7 @@ function createTasksContainerController() {
 
   function displayTasks() {
     tasksContainer.textContent = "";
+    
     if (
       logic.getActiveProject() === undefined ||
       logic.getActiveProjectTasks().length === 0
@@ -67,6 +73,10 @@ function createTasksContainerController() {
       return;
     }
 
+    const tasksHeader = document.createElement("h1");
+    tasksHeader.textContent = `${logic.getActiveProject().title} project's tasks:`
+    tasksContainer.appendChild(tasksHeader);
+    
     for (let task of logic.getActiveProjectTasks()) {
       const taskCard = createTaskCard(
         task.title,
