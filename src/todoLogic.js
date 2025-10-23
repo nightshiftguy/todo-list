@@ -79,29 +79,22 @@ export default function todoLogic() {
   }
   
   function addTestTodos() {
-    addProject(["123", "123"]);
+    addProject(["My project", "template project"]);
     createTodo([
-      "title",
+      "first todo",
       "description",
-      new Date(2025, 2, 10),
+      new Date(2025, 10, 10),
       "low",
       false,
     ]);
     createTodo([
-      "title",
+      "second todo",
       "description",
-      new Date(2025, 2, 20),
+      new Date(2025, 10, 20),
       "medium",
       true,
     ]);
-    createTodo([
-      "title",
-      "description",
-      new Date(2025, 2, 30),
-      "high",
-      false,
-    ]);
-    addProject(["123abc", "123"]);
+    addProject(["My second project", "template project"]);
   }
 
   if(todoStorageController.importData()===undefined || todoStorageController.importData().length===0) {addTestTodos()}
